@@ -14,6 +14,16 @@ export const CallToAction: Block = {
   interfaceName: 'CallToActionBlock',
   fields: [
     {
+      name: 'variant',
+      type: 'select',
+      defaultValue: 'gradient',
+      options: [
+        { label: 'Gradient (Black → Primary)', value: 'gradient' },
+        { label: 'Black', value: 'black' },
+        { label: 'Primary Blue', value: 'primary' },
+      ],
+    },
+    {
       name: 'richText',
       type: 'richText',
       editor: lexicalEditor({

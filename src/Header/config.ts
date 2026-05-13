@@ -25,6 +25,13 @@ export const Header: GlobalConfig = {
         },
       },
     },
+    link({
+      appearances: false,
+      overrides: {
+        name: 'signInButton',
+        label: 'Sign-in Button',
+      },
+    }),
   ],
   hooks: {
     afterChange: [revalidateHeader],

@@ -3,7 +3,7 @@ import type { Config } from 'src/payload-types'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
-
+import 'dotenv/config'
 type Global = keyof Config['globals']
 
 async function getGlobal(slug: Global, depth = 0) {

@@ -10,20 +10,48 @@ export const Footer: GlobalConfig = {
   },
   fields: [
     {
-      name: 'navItems',
+      name: 'socialLinks',
+      label: 'Social Links',
       type: 'array',
+      maxRows: 8,
       fields: [
         link({
           appearances: false,
         }),
       ],
-      maxRows: 6,
       admin: {
         initCollapsed: true,
         components: {
           RowLabel: '@/Footer/RowLabel#RowLabel',
         },
       },
+    },
+    {
+      name: 'columns',
+      label: 'Link Columns',
+      type: 'array',
+      maxRows: 4,
+      admin: {
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'links',
+          type: 'array',
+          maxRows: 10,
+          fields: [
+            link({
+              appearances: false,
+            }),
+          ],
+          admin: {
+            initCollapsed: true,
+            components: {
+              RowLabel: '@/Footer/RowLabel#RowLabel',
+            },
+          },
+        },
+      ],
     },
   ],
   hooks: {

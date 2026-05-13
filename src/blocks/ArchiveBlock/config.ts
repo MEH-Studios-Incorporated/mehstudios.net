@@ -12,6 +12,28 @@ export const Archive: Block = {
   interfaceName: 'ArchiveBlock',
   fields: [
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'heading',
+          type: 'text',
+          label: 'Section Heading',
+          admin: { width: '50%' },
+        },
+        {
+          name: 'arrangement',
+          type: 'select',
+          label: 'Layout',
+          defaultValue: 'row',
+          admin: { width: '50%' },
+          options: [
+            { label: 'Row (carousel)', value: 'row' },
+            { label: 'Grid', value: 'grid' },
+          ],
+        },
+      ],
+    },
+    {
       name: 'introContent',
       type: 'richText',
       editor: lexicalEditor({
@@ -25,6 +47,7 @@ export const Archive: Block = {
         },
       }),
       label: 'Intro Content',
+      admin: { description: 'Legacy field — use Heading above instead.' },
     },
     {
       name: 'populateBy',

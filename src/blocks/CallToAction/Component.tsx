@@ -1,23 +1,59 @@
+// CallToActionBlock.tsx (server component — unchanged)
 import React from 'react'
-
 import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
-
 import RichText from '@/components/RichText'
 import { CMSLink } from '@/components/Link'
+import { cn } from '@/utilities/ui'
+import { CTAGradientCard } from './Component.client'
 
-export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) => {
+export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText, variant }) => {
+  const v = variant ?? 'gradient'
+
   return (
-    <div className="container">
-      <div className="bg-card rounded border p-4 flex flex-col gap-8 md:flex-row md:justify-between md:items-center">
-        <div className="max-w-[48rem] flex items-center">
-          {richText && <RichText className="mb-0" data={richText} enableGutter={false} />}
+    <section className="meh-container cta-section">
+      {v === 'gradient' ? (
+        <CTAGradientCard>
+          {richText && (
+            <RichText
+              className="cta-richtext"
+              data={richText}
+              enableGutter={false}
+              enableProse={false}
+            />
+          )}
+          {links && links.length > 0 && (
+            <div className="flex flex-wrap gap-4">
+              {links.map(({ link }, i) => (
+                <CMSLink key={i} size="lg" {...link} />
+              ))}
+            </div>
+          )}
+        </CTAGradientCard>
+      ) : (
+        <div
+          className={cn(
+            'cta-card relative w-full rounded-[4px] overflow-hidden flex flex-col justify-between gap-6',
+            v === 'black' && 'bg-neutral',
+            v === 'primary' && 'bg-primary',
+          )}
+        >
+          {richText && (
+            <RichText
+              className="cta-richtext"
+              data={richText}
+              enableGutter={false}
+              enableProse={false}
+            />
+          )}
+          {links && links.length > 0 && (
+            <div className="flex flex-wrap gap-4">
+              {links.map(({ link }, i) => (
+                <CMSLink key={i} size="lg" {...link} />
+              ))}
+            </div>
+          )}
         </div>
-        <div className="flex flex-col gap-8">
-          {(links || []).map(({ link }, i) => {
-            return <CMSLink key={i} size="lg" {...link} />
-          })}
-        </div>
-      </div>
-    </div>
+      )}
+    </section>
   )
 }

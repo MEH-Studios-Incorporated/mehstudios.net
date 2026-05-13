@@ -3,63 +3,50 @@ import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
-import RichText from '@/components/RichText'
 
-import { CollectionArchive } from '@/components/CollectionArchive'
+import { ArchiveBlockClient } from './Component.client'
 
-export const ArchiveBlock: React.FC<
-  ArchiveBlockProps & {
-    id?: string
-  }
-> = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
+export const ArchiveBlock: React.FC<ArchiveBlockProps & { id?: string }> = async (props) => {
+  const {
+    categories,
+    limit: limitFromProps,
+    populateBy,
+    selectedDocs,
+    heading,
+    arrangement,
+  } = props
 
-  const limit = limitFromProps || 3
-
+  const limit = limitFromProps || 10
   let posts: Post[] = []
 
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
 
-    const flattenedCategories = categories?.map((category) => {
-      if (typeof category === 'object') return category.id
-      else return category
-    })
+    const flattenedCategories = categories?.map((c) =>
+      typeof c === 'object' ? c.id : c,
+    )
 
-    const fetchedPosts = await payload.find({
+    const fetched = await payload.find({
       collection: 'posts',
       depth: 1,
       limit,
-      ...(flattenedCategories && flattenedCategories.length > 0
-        ? {
-            where: {
-              categories: {
-                in: flattenedCategories,
-              },
-            },
-          }
+      ...(flattenedCategories?.length
+        ? { where: { categories: { in: flattenedCategories } } }
         : {}),
     })
 
-    posts = fetchedPosts.docs
+    posts = fetched.docs
   } else {
-    if (selectedDocs?.length) {
-      const filteredSelectedPosts = selectedDocs.map((post) => {
-        if (typeof post.value === 'object') return post.value
-      }) as Post[]
-
-      posts = filteredSelectedPosts
-    }
+    posts = (selectedDocs ?? [])
+      .map((doc) => (typeof doc.value === 'object' ? doc.value : null))
+      .filter((p): p is Post => p != null)
   }
 
   return (
-    <div className="my-16" id={`block-${id}`}>
-      {introContent && (
-        <div className="container mb-16">
-          <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
-        </div>
-      )}
-      <CollectionArchive posts={posts} />
-    </div>
+    <ArchiveBlockClient
+      heading={heading ?? null}
+      arrangement={(arrangement as 'row' | 'grid') ?? 'row'}
+      posts={posts}
+    />
   )
 }
