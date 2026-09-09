@@ -3,13 +3,11 @@ import type { Metadata } from 'next/types'
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
 import { notFound } from 'next/navigation'
+import { sdk } from '@/utilities/getPayloadSDK'
 
-export const revalidate = 600
 
 type Args = {
   params: Promise<{
@@ -19,18 +17,15 @@ type Args = {
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { pageNumber } = await paramsPromise
-  const payload = await getPayload({ config: configPromise })
-
   const sanitizedPageNumber = Number(pageNumber)
 
   if (!Number.isInteger(sanitizedPageNumber)) notFound()
 
-  const posts = await payload.find({
+  const posts = await sdk.find({
     collection: 'posts',
     depth: 1,
     limit: 12,
     page: sanitizedPageNumber,
-    overrideAccess: false,
   })
 
   return (
@@ -70,13 +65,13 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const { totalDocs } = await payload.count({
+  const { totalDocs } = await sdk.count({
     collection: 'posts',
-    overrideAccess: false,
   })
 
-  const totalPages = Math.ceil(totalDocs / 10)
+  // `output: export` rejects a dynamic route that generates no paths, so page 1
+  // always exists even when the posts collection is empty.
+  const totalPages = Math.max(1, Math.ceil(totalDocs / 10))
 
   const pages: { pageNumber: string }[] = []
 
