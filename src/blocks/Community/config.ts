@@ -34,7 +34,6 @@ export const Community: Block = {
       overrides: {
         admin: {
           hideGutter: true,
-          initCollapsed: true,
         },
         label: 'CTA Button',
       },
