@@ -14,6 +14,22 @@ import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 import { collectionTemplatesPlugin } from '@alacrity-education/payload-plugin-collection-templates'
 import { payloadPluginCollectionsGlobalsWebhook } from '@alacrity-education/payload-plugin-collections-globals-webhook'
+import type { WebhookDocumentContext } from '@alacrity-education/payload-plugin-collections-globals-webhook'
+
+/**
+ * Only a published document fires the rebuild webhook.
+ *
+ * `pages` and `posts` autosave every 100ms for live preview, and Payload's
+ * autosave runs the same submit path as a manual save — so the admin panel
+ * reported a document update, and the webhook rebuilt the site, on every
+ * keystroke. A Publish click is the only save that sets `_status` to
+ * `published`; autosaves and Save Draft clicks stay `draft`, and a draft is not
+ * on the public site, so there is nothing to rebuild.
+ *
+ * The globals below carry no `versions`, so every save of one is already
+ * explicit and they stay opted in wholesale.
+ */
+const publishedOnly = ({ doc }: WebhookDocumentContext): boolean => doc._status === 'published'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -104,8 +120,8 @@ export const plugins: Plugin[] = [
     url: process.env.PAYLOAD_WEBHOOK_URL,
     disabled: !process.env.PAYLOAD_WEBHOOK_URL,
     collections: {
-      pages: true,
-      posts: true,
+      pages: { filter: publishedOnly },
+      posts: { filter: publishedOnly },
     },
     globals: {
       header: true,
