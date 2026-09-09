@@ -1,8 +1,7 @@
 import React from 'react'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import type { NewsPanelBlock as NewsPanelBlockProps, Post } from '@/payload-types'
 import { NewsPanelBlockClient, type ClientPost } from './Component.client'
+import { sdk } from '@/utilities/getPayloadSDK'
 
 function extractId(val: number | Post | null | undefined): number | null {
   if (val == null) return null
@@ -31,12 +30,10 @@ export const NewsPanelBlock: React.FC<NewsPanelBlockProps> = async (props) => {
 
   if (!featuredId) return null
 
-  const payload = await getPayload({ config: configPromise })
-
   const allIds = [featuredId, ...articleIds]
   const settled = await Promise.allSettled(
     allIds.map((id) =>
-      payload.findByID({ collection: 'posts', id, depth: 1 }),
+      sdk.findByID({ collection: 'posts', id, depth: 1 }),
     ),
   )
 

@@ -2,9 +2,6 @@ import type { Metadata } from 'next'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
-import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import RichText from '@/components/RichText'
 
@@ -13,15 +10,15 @@ import type { Post } from '@/payload-types'
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { sdk } from '@/utilities/getPayloadSDK'
+
+const NO_POSTS_PLACEHOLDER = 'no-posts'
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const posts = await payload.find({
+  const posts = await sdk.find({
     collection: 'posts',
     draft: false,
     limit: 1000,
-    overrideAccess: false,
     pagination: false,
     select: {
       slug: true,
@@ -32,7 +29,8 @@ export async function generateStaticParams() {
     return { slug }
   })
 
-  return params
+  // `output: export` rejects a dynamic route that generates no paths at all.
+  return params.length > 0 ? params : [{ slug: NO_POSTS_PLACEHOLDER }]
 }
 
 type Args = {
@@ -42,7 +40,6 @@ type Args = {
 }
 
 export default async function Post({ params: paramsPromise }: Args) {
-  const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
@@ -58,7 +55,6 @@ export default async function Post({ params: paramsPromise }: Args) {
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      {draft && <LivePreviewListener />}
 
       <PostHero post={post} />
 
@@ -87,15 +83,11 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
 
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
+  const result = await sdk.find({
     collection: 'posts',
-    draft,
+    draft: false,
     limit: 1,
-    overrideAccess: draft,
     pagination: false,
     where: {
       slug: {

@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
-import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
 
@@ -11,15 +9,15 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { sdk } from '@/utilities/getPayloadSDK'
+
+const NO_PAGES_PLACEHOLDER = 'no-pages'
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const pages = await payload.find({
+  const pages = await sdk.find({
     collection: 'pages',
     draft: false,
     limit: 1000,
-    overrideAccess: false,
     pagination: false,
     select: {
       slug: true,
@@ -34,7 +32,10 @@ export async function generateStaticParams() {
       return { slug }
     })
 
-  return params
+  // `output: export` rejects a dynamic route that generates no paths at all.
+  // With an empty pages collection, emit one placeholder; the page renders the
+  // not-found boundary for it.
+  return params?.length ? params : [{ slug: NO_PAGES_PLACEHOLDER }]
 }
 
 type Args = {
@@ -44,7 +45,6 @@ type Args = {
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
-  const { isEnabled: draft } = await draftMode()
   const { slug = 'home' } = await paramsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
@@ -72,7 +72,6 @@ export default async function Page({ params: paramsPromise }: Args) {
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      {draft && <LivePreviewListener />}
 
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
@@ -92,16 +91,12 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
 
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
+  const result = await sdk.find({
     collection: 'pages',
-    draft,
+    draft: false,
     limit: 1,
     pagination: false,
-    overrideAccess: draft,
     where: {
       slug: {
         equals: slug,

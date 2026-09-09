@@ -1,15 +1,12 @@
 import type { Config } from 'src/payload-types'
 
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
 import 'dotenv/config'
+import { sdk } from '@/utilities/getPayloadSDK'
 type Global = keyof Config['globals']
 
 async function getGlobal(slug: Global, depth = 0) {
-  const payload = await getPayload({ config: configPromise })
-
-  const global = await payload.findGlobal({
+  const global = await sdk.findGlobal({
     slug,
     depth,
   })

@@ -1,10 +1,9 @@
 import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
 
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import React from 'react'
 
 import { ArchiveBlockClient } from './Component.client'
+import { sdk } from '@/utilities/getPayloadSDK'
 
 export const ArchiveBlock: React.FC<ArchiveBlockProps & { id?: string }> = async (props) => {
   const {
@@ -20,13 +19,11 @@ export const ArchiveBlock: React.FC<ArchiveBlockProps & { id?: string }> = async
   let posts: Post[] = []
 
   if (populateBy === 'collection') {
-    const payload = await getPayload({ config: configPromise })
-
     const flattenedCategories = categories?.map((c) =>
       typeof c === 'object' ? c.id : c,
     )
 
-    const fetched = await payload.find({
+    const fetched = await sdk.find({
       collection: 'posts',
       depth: 1,
       limit,
