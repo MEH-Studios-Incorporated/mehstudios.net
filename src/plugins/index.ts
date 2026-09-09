@@ -12,6 +12,8 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { collectionTemplatesPlugin } from '@alacrity-education/payload-plugin-collection-templates'
+import { payloadPluginCollectionsGlobalsWebhook } from '@alacrity-education/payload-plugin-collections-globals-webhook'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -87,6 +89,27 @@ export const plugins: Plugin[] = [
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },
+    },
+  }),
+  collectionTemplatesPlugin({
+    collections: {
+      pages: true,
+      posts: { exclude: ['author'] },
+    },
+  }),
+  // `disabled` unless a target is configured: without a url the plugin reports
+  // a configuration error on every admin save, so it stays inert until
+  // PAYLOAD_WEBHOOK_URL is set.
+  payloadPluginCollectionsGlobalsWebhook({
+    url: process.env.PAYLOAD_WEBHOOK_URL,
+    disabled: !process.env.PAYLOAD_WEBHOOK_URL,
+    collections: {
+      pages: true,
+      posts: true,
+    },
+    globals: {
+      header: true,
+      footer: true,
     },
   }),
 ]
