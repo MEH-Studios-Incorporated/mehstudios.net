@@ -5,6 +5,7 @@ import RichText from '@/components/RichText'
 import { CMSLink } from '@/components/Link'
 import { cn } from '@/utilities/ui'
 import { CTAGradientCard } from './Component.client'
+import { hasRichTextContent } from '@/utilities/richText'
 
 export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText, variant }) => {
   const v = variant ?? 'gradient'
@@ -13,7 +14,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText, va
     <section className="meh-container cta-section">
       {v === 'gradient' ? (
         <CTAGradientCard>
-          {richText && (
+          {hasRichTextContent(richText) && (
             <RichText
               className="cta-richtext"
               data={richText}
@@ -37,7 +38,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText, va
             v === 'primary' && 'bg-primary',
           )}
         >
-          {richText && (
+          {hasRichTextContent(richText) && (
             <RichText
               className="cta-richtext"
               data={richText}

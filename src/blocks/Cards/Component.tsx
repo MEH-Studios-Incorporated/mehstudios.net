@@ -6,6 +6,7 @@ import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
 import { cn } from '@/utilities/ui'
+import { hasRichTextContent } from '@/utilities/richText'
 
 type CardItem = NonNullable<CardsBlockProps['cards']>[number]
 
@@ -145,7 +146,7 @@ function InformationCard({ card, grid = false }: { card: CardItem; grid?: boolea
         }}
       />
       <div className="relative  px-[clamp(20px,4vw,37px)] pb-[clamp(20px,3vw,28px)] flex flex-col gap-4">
-        {card.richText && (
+        {hasRichTextContent(card.richText) && (
           <RichText
             data={card.richText}
             enableGutter={false}

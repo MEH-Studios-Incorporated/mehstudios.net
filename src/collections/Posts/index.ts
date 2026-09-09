@@ -26,6 +26,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from 'payload'
+import { metaKeywords } from '@/fields/metaKeywords'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -151,6 +152,7 @@ export const Posts: CollectionConfig<'posts'> = {
             }),
 
             MetaDescriptionField({}),
+            metaKeywords,
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,
