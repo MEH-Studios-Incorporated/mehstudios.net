@@ -45,24 +45,6 @@ const nextConfig = {
     return webpackConfig
   },
   reactStrictMode: true,
-  typescript: {
-    // Suppresses six known type errors, listed below. Some are in code that
-    // ships in the export, so this is not "all harmless server-side noise".
-    //
-    // A plain `tsc --noEmit` will not show them: TypeScript 6 treats the
-    // `baseUrl` deprecation in tsconfig.json as a hard error and stops before
-    // type checking. Use `npx tsc --noEmit --ignoreDeprecations 6.0`.
-    //
-    //   Header/Component.tsx         getCachedGlobal returns a union of every
-    //                                global, assigned to Header. Fix: make
-    //                                getCachedGlobal generic over the slug.
-    //   Header/Component.client.tsx  onClick is not on CMSLinkType
-    //   components/ui/pagination.tsx variant 'ghost' is not defined
-    //   blocks/Community/config.ts   initCollapsed invalid on a group's admin
-    //   endpoints/seed/index.ts x2   footer seed writes navItems, but Footer
-    //                                has socialLinks/columns
-    ignoreBuildErrors: true,
-  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
