@@ -290,7 +290,7 @@ export interface Page {
   generateSlug?: boolean | null;
   slug: string;
   /**
-   * Template this document was created from. Values are copied once, when the template is first applied; later template edits do not change this document.
+   * Template this document was created from. Values were copied once, when the template was applied; later template edits do not change this document.
    */
   inheritsFrom?: (number | null) | PagesT;
   updatedAt: string;
@@ -467,7 +467,7 @@ export interface Post {
   generateSlug?: boolean | null;
   slug: string;
   /**
-   * Template this document was created from. Values are copied once, when the template is first applied; later template edits do not change this document.
+   * Template this document was created from. Values were copied once, when the template was applied; later template edits do not change this document.
    */
   inheritsFrom?: (number | null) | PostsT;
   updatedAt: string;
