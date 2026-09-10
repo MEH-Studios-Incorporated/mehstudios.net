@@ -12,11 +12,12 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { SITE_TITLE, buildTitle } from '@/utilities/siteMetadata'
 import { collectionTemplatesPlugin } from '@alacrity-education/payload-plugin-collection-templates'
 import { payloadPluginCollectionsGlobalsWebhook } from '@alacrity-education/payload-plugin-collections-globals-webhook'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? buildTitle(doc.title) : SITE_TITLE
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {

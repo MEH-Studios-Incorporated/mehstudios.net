@@ -13,7 +13,7 @@ const nextConfig = {
     dangerouslyAllowLocalIP: true,
     remotePatterns: [
       ...[
-        NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */,
+        NEXT_PUBLIC_SERVER_URL /* 'https://mehstudios.net' */,
         // The frontend reads from a remote Payload instance, which serves
         // media from its own origin.
         process.env.NEXT_PUBLIC_PAYLOAD_API_URL,

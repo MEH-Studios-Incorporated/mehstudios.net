@@ -6,6 +6,7 @@ import { Pagination } from '@/components/Pagination'
 import React from 'react'
 import PageClient from './page.client'
 import { sdk } from '@/utilities/getPayloadSDK'
+import { buildTitle } from '@/utilities/siteMetadata'
 
 
 export default async function Page() {
@@ -52,6 +53,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Multimedia Entertainment Hub Posts`,
+    title: buildTitle('Posts'),
   }
 }

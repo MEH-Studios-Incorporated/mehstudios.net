@@ -77,7 +77,7 @@ export const seed = async ({
     depth: 0,
     where: {
       email: {
-        equals: 'demo-author@example.com',
+        equals: 'demo-author@mehstudios.net',
       },
     },
   })
@@ -104,7 +104,7 @@ export const seed = async ({
       collection: 'users',
       data: {
         name: 'Demo Author',
-        email: 'demo-author@example.com',
+        email: 'demo-author@mehstudios.net',
         password: 'password',
       },
     }),
@@ -259,17 +259,8 @@ export const seed = async ({
               {
                 link: {
                   type: 'custom',
-                  label: 'Source Code',
-                  newTab: true,
-                  url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-                },
-              },
-              {
-                link: {
-                  type: 'custom',
-                  label: 'Payload',
-                  newTab: true,
-                  url: 'https://payloadcms.com/',
+                  label: 'Posts',
+                  url: '/posts',
                 },
               },
             ],
