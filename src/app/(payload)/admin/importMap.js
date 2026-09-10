@@ -1,4 +1,3 @@
-import { WebhookBanner as WebhookBanner_558f20e81d4ecba03c5142795c808fee } from '@alacrity-education/payload-plugin-collections-globals-webhook/client'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -30,13 +29,14 @@ import { FolderTypeField as FolderTypeField_2b8867833a34864a02ddf429b0728a40 } f
 import { RowLabel as RowLabel_ec255a65fa6fa8d1faeb09cf35284224 } from '@/Header/RowLabel'
 import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/RowLabel'
 import { TemplatesStatusField as TemplatesStatusField_eead76c5b9b73ead958a7a55f305be1b } from '@alacrity-education/payload-plugin-collection-templates/rsc'
+import { AdminIcon as AdminIcon_048abc6671a4fc1f451175ea3afb1836 } from '@/components/Logo/AdminIcon'
+import { AdminLogo as AdminLogo_d0335e7a62aec198e4416a8134eda638 } from '@/components/Logo/AdminLogo'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
 import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/components/BeforeLogin'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
-  "@alacrity-education/payload-plugin-collections-globals-webhook/client#WebhookBanner": WebhookBanner_558f20e81d4ecba03c5142795c808fee,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -68,6 +68,8 @@ export const importMap = {
   "@/Header/RowLabel#RowLabel": RowLabel_ec255a65fa6fa8d1faeb09cf35284224,
   "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
   "@alacrity-education/payload-plugin-collection-templates/rsc#TemplatesStatusField": TemplatesStatusField_eead76c5b9b73ead958a7a55f305be1b,
+  "@/components/Logo/AdminIcon#AdminIcon": AdminIcon_048abc6671a4fc1f451175ea3afb1836,
+  "@/components/Logo/AdminLogo#AdminLogo": AdminLogo_d0335e7a62aec198e4416a8134eda638,
   "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,
   "@/components/BeforeLogin#default": default_8a7ab0eb7ab5c511aba12e68480bfe5e,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
