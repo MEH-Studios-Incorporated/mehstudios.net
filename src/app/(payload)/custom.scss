@@ -1,0 +1,43 @@
+/**
+ * Admin-panel branding overrides.
+ *
+ * The MEH monogram is white on transparent, which disappears against Payload's
+ * light theme — invert it there so the mark reads in both themes.
+ */
+[data-theme='light'] .meh-admin-graphic {
+  filter: invert(1);
+}
+
+.meh-admin-logo {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.meh-admin-logo__mark {
+  height: 68px;
+  width: auto;
+}
+
+.meh-admin-logo__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: left;
+
+  strong {
+    font-size: 1.1rem;
+    line-height: 1.2;
+  }
+
+  span {
+    font-size: 0.8rem;
+    opacity: 0.65;
+  }
+}
+
+.meh-admin-icon {
+  height: 26px;
+  width: auto;
+}

@@ -23,6 +23,7 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/utilities/siteMetadata'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
@@ -32,7 +33,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <link href="/favicon.png" rel="icon" type="image/png" sizes="512x512" />
+        <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
       </head>
       <body >
         <Providers>
@@ -53,9 +55,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  applicationName: 'Multimedia Entertainment Hub',
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@payloadcms',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
 }
