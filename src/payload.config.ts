@@ -14,13 +14,42 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { SITE_DESCRIPTION, SITE_NAME, SITE_OG_IMAGE, SITE_TITLE } from './utilities/siteMetadata'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    // Branding for the admin panel: browser tab title, favicon and the social
+    // card the admin URL produces. Without this Payload falls back to its own
+    // name and logo.
+    meta: {
+      // Payload renders `<view title> <titleSuffix>`, so the suffix carries the
+      // brand on its own — setting `title` as well would repeat it.
+      titleSuffix: `— ${SITE_NAME}`,
+      description: SITE_DESCRIPTION,
+      icons: [
+        {
+          type: 'image/png',
+          rel: 'icon',
+          url: '/favicon.png',
+        },
+      ],
+      openGraph: {
+        description: SITE_DESCRIPTION,
+        images: [{ url: `${getServerSideURL()}${SITE_OG_IMAGE}` }],
+        siteName: SITE_NAME,
+        title: SITE_TITLE,
+      },
+    },
     components: {
+      // Replaces Payload's default logo (login screen) and icon (nav) with the
+      // MEH monogram.
+      graphics: {
+        Logo: '@/components/Logo/AdminLogo#AdminLogo',
+        Icon: '@/components/Logo/AdminIcon#AdminIcon',
+      },
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
       beforeLogin: ['@/components/BeforeLogin'],
